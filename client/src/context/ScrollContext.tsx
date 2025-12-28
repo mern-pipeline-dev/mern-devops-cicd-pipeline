@@ -1,7 +1,7 @@
+// src/context/ScrollContext.tsx
 import React, { createContext, useContext, useRef, type RefObject } from 'react';
 
 type ScrollContextType = RefObject<HTMLDivElement | null>;
-
 const ScrollContext = createContext<ScrollContextType | undefined>(undefined);
 
 export function ScrollProvider({ children }: { children: React.ReactNode }) {
@@ -9,7 +9,12 @@ export function ScrollProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ScrollContext.Provider value={containerRef}>
-      {children}
+      <div 
+        ref={containerRef} 
+        className="h-screen overflow-y-auto overflow-x-hidden scroll-smooth relative"
+      >
+        {children}
+      </div>
     </ScrollContext.Provider>
   );
 }
