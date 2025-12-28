@@ -1,63 +1,59 @@
 import React from 'react';
-import { ChevronDown } from 'lucide-react';
-import { VehicleModel } from '../components/ui/VehicleModel';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { SiTesla, SiMercedes, SiBmw, SiPorsche, SiLamborghini } from 'react-icons/si';
 
-const Home: React.FC = () => {
+const Home = () => {
+  const { scrollYProgress } = useScroll();
+  
+  // Transition: Content slides up slightly as the next section arrives
+  const y = useTransform(scrollYProgress, [0, 0.2], [0, -120]);
+  const opacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#0F0F0F]">
+    <section className="h-screen w-full flex flex-col justify-between relative z-20 px-6 max-w-7xl mx-auto overflow-hidden pb-6 pt-10">
       
-      {/* 1. The 3D Model as Background */}
-      <div className="absolute inset-0 z-0 flex items-center justify-center opacity-60 lg:opacity-80">
-        <div className="w-full h-full max-w-[1200px] max-h-[800px] lg:translate-x-32 transition-transform duration-1000">
-          <VehicleModel />
-        </div>
-      </div>
+      {/* 1. TOP SECTION: Topic and Main Action */}
+      <motion.div style={{ y, opacity }} className="flex-grow flex flex-col justify-center">
+        <div className="grid lg:grid-cols-2 gap-4 items-center">
+          <div className="space-y-4">
+            <h1 className="text-6xl lg:text-8xl font-black uppercase text-white tracking-tighter leading-[0.85]">
+              Premium Car <br /> 
+              <span className="text-[#FF8C00] drop-shadow-[0_0_30px_rgba(255,140,0,0.3)]">Rental</span>
+            </h1>
+            <p className="text-gray-400 text-base max-w-md leading-relaxed">
+              Experience the pleasure of driving the best high-tech, premium cars from around the world. Seamless and fast.
+            </p>
+            <div className="pt-2">
+              <button className="bg-[#FF8C00] text-black px-10 py-4 rounded-xl font-black uppercase tracking-widest shadow-[0_10px_20px_rgba(255,140,0,0.2)] hover:bg-white transition-all active:scale-95">
+                BROWSE FLEET
+              </button>
+            </div>
+          </div>
 
-      {/* 2. Content Overlay */}
-      <div className="relative z-10 max-w-[1400px] mx-auto px-10 pt-32 min-h-screen flex flex-col justify-between">
-        
-        <div className="max-w-2xl">
-          <h1 className="text-7xl md:text-9xl font-black text-white leading-tight tracking-tighter drop-shadow-2xl">
-            Drive Your <br />
-            <span className="bg-text-gradient bg-clip-text text-transparent">
-              Dreams.
-            </span>
-          </h1>
-          
-          <p className="text-gray-300 text-lg md:text-xl max-w-sm mt-8 leading-relaxed backdrop-blur-sm bg-black/10 p-4 rounded-lg border border-white/5">
-            Experience the future of premium travel. From luxury concepts to rugged off-roaders, the journey starts here.
-          </p>
-
-          <div className="flex gap-4 mt-10">
-            <button className="bg-brand-orange hover:bg-orange-600 px-8 py-4 rounded-full font-bold transition-all shadow-lg shadow-brand-orange/20 cursor-pointer">
-              Explore Fleet
-            </button>
-            <button className="bg-white/10 backdrop-blur-md border border-white/20 px-8 py-4 rounded-full font-bold hover:bg-white/20 transition-all cursor-pointer">
-              Watch Demo
-            </button>
+          {/* Mazda Image with Integrated Glow */}
+          <div className="hidden lg:flex justify-end relative">
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-[#FF8C00]/5 blur-[120px] rounded-full" />
+            <img 
+              src="https://www.mazda.com.au/globalassets/mazda-3-sedan-transparent.png" 
+              alt="Mazda 3 Premium" 
+              className="w-full max-w-xl relative z-10 drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)] object-contain"
+            />
           </div>
         </div>
+      </motion.div>
 
-        {/* Bottom Section */}
-        <div className="flex justify-between items-end pb-12">
-          <div className="hidden lg:block text-xs uppercase tracking-[0.3em] text-gray-500 vertical-text">
-            Unique Drive // 2025 Edition
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-xs uppercase tracking-widest text-brand-orange">Scroll</span>
-            <ChevronDown size={30} className="text-brand-orange animate-bounce" />
-          </div>
-          <div className="hidden lg:flex gap-8 text-sm font-mono text-gray-400">
-            <span>01 // LUXURY</span>
-            <span>02 // COMFORT</span>
-            <span>03 // SPEED</span>
-          </div>
+      {/* 2. BOTTOM SECTION: Fleet Logos (Pinned to bottom of view) */}
+      <motion.div style={{ y, opacity }} className="w-full pt-6 border-t border-white/5">
+        <p className="text-gray-500 uppercase tracking-widest font-bold text-[10px] mb-4">World Class Fleet</p>
+        <div className="flex flex-wrap items-center gap-10 md:gap-20 opacity-100 text-white">
+          <SiPorsche size={36} className="hover:text-[#FF8C00] transition-colors cursor-pointer" /> 
+          <SiMercedes size={40} className="hover:text-[#FF8C00] transition-colors cursor-pointer" /> 
+          <SiTesla size={30} className="hover:text-[#FF8C00] transition-colors cursor-pointer" /> 
+          <SiBmw size={40} className="hover:text-[#FF8C00] transition-colors cursor-pointer" /> 
+          <SiLamborghini size={40} className="hover:text-[#FF8C00] transition-colors cursor-pointer" />
         </div>
-      </div>
-
-      {/* 3. Aesthetic Background Glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-orange/10 blur-[120px] rounded-full -z-10"></div>
-    </div>
+      </motion.div>
+    </section>
   );
 };
 
