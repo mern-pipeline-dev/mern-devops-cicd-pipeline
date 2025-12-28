@@ -1,35 +1,54 @@
 import React from 'react';
-import Navbar from './components/layout/Navbar';
+import Navbar from './components/layout/Navbar'; 
 import Home from './pages/Home';
 import Fleet from './pages/Fleet';
+import Booking from './pages/BookingDetail'; // Ensure this path is correct
 import ContinuousBackground from './components/ui/ContinuousBackground';
 import TopRightSteeringWheel from './components/ui/TopRightSteeringWheel';
+import { ScrollProvider, useScrollContainer } from './context/ScrollContext';
 
-function App() {
+function AppLayout() {
+  const containerRef = useScrollContainer();
+
   return (
-    <div className="bg-[#0A0A0A] min-h-screen relative overflow-x-hidden">
-      {/* Fixed Background stays behind everything */}
+    <div 
+      ref={containerRef}
+      className="relative h-screen overflow-y-auto snap-y snap-mandatory scroll-smooth bg-[#0A0A0A] no-scrollbar"
+    >
       <ContinuousBackground />
-      
-      {/* Fixed UI Stays on top */}
       <TopRightSteeringWheel />
-      <Navbar />
+      
+      <header className="fixed top-0 left-0 w-full z-[100]">
+        <Navbar />
+      </header>
 
-      {/* Main Sections */}
       <main className="relative z-10">
-        <Home />  {/* This is the 100vh Hero section */}
-        <Fleet /> {/* This is the content below the fold */}
+        <section className="h-screen snap-start">
+          <Home />
+        </section>
+        
+        <section className="h-screen snap-start">
+          <Fleet />
+        </section>
+
+        {/* Removed placeholder div, added the Booking component */}
+        <section className="h-screen snap-start">
+          <Booking />
+        </section>
       </main>
 
-      {/* Global Style Reset */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        body { margin: 0; padding: 0; background: #0A0A0A; }
-        html { scroll-behavior: smooth; }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: #FF8C00; border-radius: 10px; }
-      `}} />
+      <style>{`
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <ScrollProvider>
+      <AppLayout />
+    </ScrollProvider>
+  );
+}
