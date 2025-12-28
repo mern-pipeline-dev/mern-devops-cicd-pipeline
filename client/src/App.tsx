@@ -1,54 +1,29 @@
+
 import React from 'react';
-import Navbar from './components/layout/Navbar'; 
+import { ScrollProvider } from './context/ScrollContext';
+import Navbar from './components/layout/Navbar';
+import ScrollingCar from './components/ui/ScrollingCar';
+import ContinuousBackground from './components/ui/ContinuousBackground';
+
 import Home from './pages/Home';
 import Fleet from './pages/Fleet';
-import Booking from './pages/BookingDetail'; // Ensure this path is correct
-import ContinuousBackground from './components/ui/ContinuousBackground';
-import TopRightSteeringWheel from './components/ui/TopRightSteeringWheel';
-import { ScrollProvider, useScrollContainer } from './context/ScrollContext';
+import BookingDetail from './pages/BookingDetail';
+import ContactAndFooter from './pages/ContactAndFooter';
 
-function AppLayout() {
-  const containerRef = useScrollContainer();
-
-  return (
-    <div 
-      ref={containerRef}
-      className="relative h-screen overflow-y-auto snap-y snap-mandatory scroll-smooth bg-[#0A0A0A] no-scrollbar"
-    >
-      <ContinuousBackground />
-      <TopRightSteeringWheel />
-      
-      <header className="fixed top-0 left-0 w-full z-[100]">
-        <Navbar />
-      </header>
-
-      <main className="relative z-10">
-        <section className="h-screen snap-start">
-          <Home />
-        </section>
-        
-        <section className="h-screen snap-start">
-          <Fleet />
-        </section>
-
-        {/* Removed placeholder div, added the Booking component */}
-        <section className="h-screen snap-start">
-          <Booking />
-        </section>
-      </main>
-
-      <style>{`
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
-    </div>
-  );
-}
-
-export default function App() {
+const App: React.FC = () => {
   return (
     <ScrollProvider>
-      <AppLayout />
+      <Navbar />
+      <ContinuousBackground />
+      <ScrollingCar />
+      <main className="relative z-10 w-full">
+        <Home />
+        <Fleet />
+        <BookingDetail />
+        <ContactAndFooter />
+      </main>
     </ScrollProvider>
   );
-}
+};
+
+export default App;
