@@ -1,68 +1,48 @@
+// src/pages/BookingDetail.tsx
 import React from 'react';
 
-const BookingDetail = () => {
-  return (
-    // 'w-screen' and 'overflow-x-hidden' ensures it hits the corners without scrollbars
-    <div className="min-h-screen w-screen overflow-x-hidden bg-[#0a0a0a] text-white flex flex-col">
-      
-      {/* NOTE: If you already have a Navbar in App.jsx, 
-         DELETE the entire <nav> block below. 
-      */}
-      <nav className="w-full bg-[#0a0a0a] border-b border-zinc-800 px-10 py-5 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="bg-orange-500 text-black font-bold px-2 py-1 rounded">V</div>
-          <span className="text-xl font-bold">VoltDrive</span>
-        </div>
-        <div className="hidden md:flex gap-10 text-sm font-bold uppercase tracking-widest">
-          <a href="/" className="hover:text-orange-500">Home</a>
-          <a href="/fleet" className="hover:text-orange-500">Fleet</a>
-          <a href="/about" className="hover:text-orange-500">About</a>
-          <a href="/contact" className="hover:text-orange-500">Contact</a>
-        </div>
-        <button className="bg-orange-500 text-black text-xs font-bold px-6 py-3 rounded-md uppercase">
-          Download App
-        </button>
-      </nav>
+const BookingDetail: React.FC = () => {
+  const locations = [
+    "Heathrow Airport (LHR)", "Gatwick Airport (LGW)", "London City Center",
+    "Manchester Airport (MAN)", "Birmingham International", "Edinburgh City",
+    "Glasgow Central", "Bristol Temple Meads"
+  ];
 
-      {/* Main Content Area - Fixed to be visible entirely */}
-      <main className="flex-1 flex flex-col items-center p-6 md:p-12 overflow-y-auto">
-        <div className="w-full max-w-[1400px] grid grid-cols-1 lg:grid-cols-2 gap-10">
-          
-          {/* Left Column */}
-          <div className="flex flex-col gap-4">
-            <span className="bg-zinc-800 text-orange-400 text-[10px] font-bold px-3 py-1 rounded w-fit uppercase">
+  return (
+    <div id="booking" className="min-h-screen w-full bg-transparent text-white flex flex-col pt-32 pb-20">
+      <main className="flex-1 flex flex-col items-center px-6">
+        <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-16">
+          <div className="flex flex-col gap-6">
+            <span className="bg-zinc-800 text-[#FF8C00] text-[10px] font-bold px-4 py-1.5 rounded-full w-fit uppercase tracking-widest">
               Premium Sport
             </span>
-            <h1 className="text-4xl md:text-6xl font-black">Porsche 718 Boxster S</h1>
-            <div className="mt-4 rounded-3xl overflow-hidden border border-zinc-800">
-              <img 
-                src="YOUR_IMAGE_URL" 
-                alt="Porsche" 
-                className="w-full h-auto object-cover"
-              />
+            <h1 className="text-5xl md:text-7xl font-black uppercase italic leading-none">
+              Porsche 718 <br/><span className="text-[#FF8C00]">Boxster S</span>
+            </h1>
+            <div className="mt-4 rounded-[2.5rem] overflow-hidden border border-white/5 bg-zinc-900/30 backdrop-blur-sm group">
+              <img src="https://www.pngmart.com/files/22/Porsche-911-PNG-Transparent-Image.png" alt="Porsche" className="w-full h-auto object-cover p-12 transition-transform duration-700 group-hover:scale-105" />
             </div>
           </div>
 
-          {/* Right Column (Booking Form) */}
-          <div className="bg-zinc-900/50 p-8 rounded-3xl border border-zinc-800 h-fit">
-            <div className="flex items-baseline gap-2 mb-8">
-              <span className="text-5xl font-bold text-orange-500">$120</span>
-              <span className="text-zinc-400 text-xl">/ day</span>
+          <div className="bg-[#121212]/90 backdrop-blur-md p-8 md:p-12 rounded-[3rem] border border-white/5 h-fit shadow-2xl">
+            <div className="flex items-baseline gap-2 mb-10">
+              <span className="text-6xl font-black text-white">$120</span>
+              <span className="text-zinc-500 text-xl font-medium">/ day</span>
             </div>
-
-            <form className="space-y-6">
-              <div className="flex flex-col gap-2">
-                <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Pickup Location</label>
-                <select className="bg-zinc-800 border border-zinc-700 rounded-xl p-4 text-sm focus:outline-none focus:border-orange-500">
-                  <option>Heathrow Airport (LHR)</option>
+            <form className="space-y-8">
+              <div className="flex flex-col gap-3">
+                <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.3em]">Pickup Location</label>
+                <select className="bg-zinc-800/50 border border-white/10 rounded-2xl p-5 text-sm text-white focus:outline-none focus:border-[#FF8C00]">
+                  {locations.map((loc, index) => (<option key={index} value={loc}>{loc}</option>))}
                 </select>
               </div>
-              <button className="w-full bg-orange-500 text-black font-bold py-4 rounded-xl hover:bg-orange-600 transition-colors">
-                Book Now
-              </button>
+              <div className="grid grid-cols-2 gap-4">
+                <input type="date" className="bg-zinc-800/50 border border-white/10 rounded-2xl p-5 text-sm text-white outline-none" />
+                <input type="date" className="bg-zinc-800/50 border border-white/10 rounded-2xl p-5 text-sm text-white outline-none" />
+              </div>
+              <button className="w-full bg-[#FF8C00] text-black font-black py-5 rounded-2xl uppercase tracking-widest text-sm">Proceed to Checkout</button>
             </form>
           </div>
-
         </div>
       </main>
     </div>
