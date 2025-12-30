@@ -3,10 +3,19 @@ import React from 'react';
 
 const BookingDetail: React.FC = () => {
   const locations = [
-    "Heathrow Airport (LHR)", "Gatwick Airport (LGW)", "London City Center",
-    "Manchester Airport (MAN)", "Birmingham International", "Edinburgh City",
-    "Glasgow Central", "Bristol Temple Meads"
-  ];
+  "Bandaranaike International Airport (BIA)", 
+  "Mattala Rajapaksa International Airport (MRIA)",
+  "Colombo Downtown",
+  "Kandy City Center",
+  "Galle Fort / Unawatuna",
+  "Nuwara Eliya Town",
+  "Negombo Beach",
+  "Sigiriya / Dambulla",
+  "Mirissa / Matara",
+  "Arugam Bay",
+  "Trincomalee",
+  "Jaffna City Center"
+];
 
   return (
     <div id="booking" className="min-h-screen w-full bg-transparent text-white flex flex-col pt-32 pb-20">
@@ -17,7 +26,7 @@ const BookingDetail: React.FC = () => {
               Premium Sport
             </span>
             <h1 className="text-5xl md:text-7xl font-black uppercase italic leading-none">
-              Porsche 718 <br/><span className="text-[#FF8C00]">Boxster S</span>
+              Mazda<br/><span className="text-[#FF8C00]">CX-50</span>
             </h1>
             <div className="mt-4 rounded-[2.5rem] overflow-hidden border border-white/5 bg-zinc-900/30 backdrop-blur-sm group">
               <img src="https://www.pngmart.com/files/22/Porsche-911-PNG-Transparent-Image.png" alt="Porsche" className="w-full h-auto object-cover p-12 transition-transform duration-700 group-hover:scale-105" />
@@ -26,7 +35,7 @@ const BookingDetail: React.FC = () => {
 
           <div className="bg-[#121212]/90 backdrop-blur-md p-8 md:p-12 rounded-[3rem] border border-white/5 h-fit shadow-2xl">
             <div className="flex items-baseline gap-2 mb-10">
-              <span className="text-6xl font-black text-white">$120</span>
+              <span className="text-6xl font-black text-white">RS 15000</span>
               <span className="text-zinc-500 text-xl font-medium">/ day</span>
             </div>
             <form className="space-y-8">
