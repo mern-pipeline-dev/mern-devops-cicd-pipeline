@@ -27,9 +27,9 @@ const ContactAndFooter: React.FC = () => {
 
           <div className="flex flex-col gap-4">
             {[
-              { icon: <Phone size={20} />, title: "Phone", value: "+1 (800) UNIQUE-01", sub: "Mon-Sun 24/7 Support" },
-              { icon: <Mail size={20} />, title: "Email", value: "hello@uniquerentals.com", sub: "We reply within 2 hours" },
-              { icon: <MapPin size={20} />, title: "Headquarters", value: "725 Luxury Drive, Suite 100", sub: "Beverly Hills, CA 90210" }
+              { icon: <Phone size={20} />, title: "Phone", value: "+94 075 000 000", sub: "Mon-Sun 24/7 Support" },
+              { icon: <Mail size={20} />, title: "Email", value: "voltdrive@gmail.com", sub: "We reply within 2 hours" },
+              { icon: <MapPin size={20} />, title: "Headquarters", value: "725 Luxury Drive, Suite 100", sub: "Colombo 7" }
             ].map((item, idx) => (
               <div key={idx} className="bg-[#111111]/90 backdrop-blur-md p-8 rounded-[2rem] border border-white/5 flex items-center gap-6">
                 <div className="bg-[#FF8C00] p-4 rounded-full text-black">{item.icon}</div>
@@ -49,12 +49,12 @@ const ContactAndFooter: React.FC = () => {
           <div className="space-y-6">
             <div className="flex items-center gap-2">
               <div className="bg-[#FF8C00] w-3 h-3 rounded-sm"></div>
-              <span className="font-black text-xl tracking-tighter uppercase text-white">Unique<span className="text-[#FF8C00]">Drive</span></span>
+              <span className="font-black text-xl tracking-tighter uppercase text-white">Volt<span className="text-[#FF8C00]">Drive</span></span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed">Experience the luxury of premium travel. From sedans to rugged off-roaders, we provide the perfect ride for every journey.</p>
           </div>
           <div><h4 className="font-bold text-xs uppercase mb-8 text-[#FF8C00]">Company</h4><ul className="text-gray-500 text-sm space-y-4"><li>About Us</li><li>Our Cars</li><li>Pricing</li></ul></div>
-          <div><h4 className="font-bold text-xs uppercase mb-8 text-[#FF8C00]">Contact</h4><ul className="text-gray-500 text-sm space-y-4"><li>support@uniquedrive.com</li><li>+1 (555) 000-0000</li></ul></div>
+          <div><h4 className="font-bold text-xs uppercase mb-8 text-[#FF8C00]">Contact</h4><ul className="text-gray-500 text-sm space-y-4"><li>support@voltdrive.com</li><li>+94 075 000 000</li></ul></div>
           <div><h4 className="font-bold text-xs uppercase mb-8 text-[#FF8C00]">Stay Updated</h4><div className="flex gap-2"><input type="email" placeholder="Your email" className="bg-[#161616] p-3 text-xs flex-1 outline-none" /><button className="bg-[#FF8C00] text-black font-bold px-4 py-2 rounded text-[10px] uppercase">Subscribe</button></div></div>
         </div>
         <div className="max-w-7xl mx-auto pt-10 border-t border-white/5 text-center"><p className="text-gray-600 text-[10px] font-bold uppercase tracking-[0.4em]">© 2025 VoltDrive. All Rights Reserved.</p></div>
