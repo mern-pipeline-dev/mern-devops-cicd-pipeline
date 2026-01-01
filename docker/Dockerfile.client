@@ -1,0 +1,17 @@
+# Stage 1: Build the React application
+FROM node:20-alpine AS build
+WORKDIR /app
+# Note: Since the Dockerfile is in docker/, we look for the client folder one level up
+COPY ../client/package*.json ./
+RUN npm install
+COPY ../client/ ./
+RUN npm run build
+
+# Stage 2: Serve the build with Nginx
+FROM nginx:stable-alpine
+# Copy your custom nginx.conf from the nginx/ folder
+COPY ../nginx/nginx.conf /etc/nginx/conf.d/default.conf
+# Copy built files from Stage 1 to Nginx public folder
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
