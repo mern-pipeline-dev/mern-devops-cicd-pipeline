@@ -8,6 +8,7 @@ import mazdaImg from '../assets/mazda.jpg';
 import rangeroverImg from '../assets/rangerover.jpg';
 import vezelImg from '../assets/vezel.jpg';
 
+
 const Fleet: React.FC = () => {
   // Prices updated to realistic LKR daily rates
   const cars = [
