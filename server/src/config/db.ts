@@ -1,16 +1,20 @@
 import mongoose from 'mongoose';
 
-const connectDB = async () : Promise<void> => {
-    try {
-        const conn = await mongoose.connect(process.env.MONGOdb_URI as string);
+let dbConnected = false;
 
-        console.log(`MongoDB Connected: ${conn.connection.host}`);
+const connectDB = async (): Promise<void> => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI as string);
+        dbConnected = true;
+        console.log(`✅ MongoDB Connected: ${mongoose.connection.host}`);
     } catch (error) {
-        if(error instanceof Error) {
-            console.error(`Error: ${error.message}`);
+        dbConnected = false;
+        if (error instanceof Error) {
+            console.warn(`⚠️ MongoDB Connection Failed: ${error.message}`);
+            console.warn('⚠️ Server starting WITHOUT database - using fallback mode');
         }
-        process.exit(1);    
+        // DO NOT EXIT - let server start anyway even if DB connection fails it will start
     }
 };
 
-export default connectDB;
+export { connectDB, dbConnected };
