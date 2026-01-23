@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+  labels:
+    app: mern-app
+    component: server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mern-app
+      component: server
+  template:
+    metadata:
+      labels:
+        app: mern-app
+        component: server
+    spec:
+      containers:
+        - name: server
+          image: ghcr.io/YOUR_GITHUB_USERNAME/YOUR_REPO/server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "5000"
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mern-secrets
+                  key: mongo-uri
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: mern-secrets
+                  key: jwt-secret
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+      imagePullSecrets:
+        - name: ghcr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server-service
+  labels:
+    app: mern-app
+    component: server
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5000
+      targetPort: 5000
+      protocol: TCP
+  selector:
+    app: mern-app
+    component: server
+---
+# Secret template (create manually, don't commit real values!)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mern-secrets
+type: Opaque
+stringData:
+  mongo-uri: "mongodb://mongo-service:27017/mernapp"
+  jwt-secret: "your-jwt-secret-here"
