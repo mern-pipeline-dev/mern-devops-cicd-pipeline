@@ -13,7 +13,7 @@ import ContactAndFooter from './pages/ContactAndFooter';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
-const MainLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
+const MainLayout: React.FC = () => (
   <>
     <Navbar />
     <ContinuousBackground />

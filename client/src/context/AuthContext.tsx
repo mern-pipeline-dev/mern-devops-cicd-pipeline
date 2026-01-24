@@ -21,7 +21,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       try {
         setToken(storedToken);
         setUser(JSON.parse(storedUser));
-      } catch (err) {
+      } catch (_err) {
         localStorage.removeItem("authToken");
         localStorage.removeItem("user");
       }
@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       
       // Handle axios error
       if (err && typeof err === 'object' && 'response' in err) {
-        const axiosErr = err as any;
+        const axiosErr = err as { response?: { data?: { message?: string; error?: string } } };
         errorMessage = axiosErr.response?.data?.message || axiosErr.response?.data?.error || errorMessage;
       } else if (err instanceof Error) {
         errorMessage = err.message;
@@ -79,7 +79,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       
       // Handle axios error
       if (err && typeof err === 'object' && 'response' in err) {
-        const axiosErr = err as any;
+        const axiosErr = err as { response?: { data?: { message?: string; error?: string } } };
         errorMessage = axiosErr.response?.data?.message || axiosErr.response?.data?.error || errorMessage;
       } else if (err instanceof Error) {
         errorMessage = err.message;
