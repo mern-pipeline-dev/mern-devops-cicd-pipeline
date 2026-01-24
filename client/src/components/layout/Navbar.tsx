@@ -1,9 +1,12 @@
 // src/components/layout/Navbar.tsx
 import React, { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogOut } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated, user, logout } = useAuth();
 
   const navLinks = [
     { name: 'Home', href: '#home' },
@@ -11,6 +14,11 @@ const Navbar: React.FC = () => {
     { name: 'Booking', href: '#booking' },
     { name: 'Contact', href: '#contact' },
   ];
+
+  const handleLogout = () => {
+    logout();
+    setIsOpen(false);
+  };
 
   return (
     <nav className="fixed top-0 left-0 w-full z-[100] bg-[#0a0a0a]/90 backdrop-blur-md px-6 py-6 border-b border-white/5">
@@ -37,10 +45,38 @@ const Navbar: React.FC = () => {
           ))}
         </ul>
 
-        <div className="hidden md:block">
-          <button className="bg-[#FF8C00] text-black px-6 py-2.5 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-white transition-all active:scale-95">
-            Download App
-          </button>
+        <div className="hidden md:flex items-center gap-3">
+          {isAuthenticated ? (
+            <>
+              <div className="flex items-center gap-3 pr-4 border-r border-gray-600">
+                <span className="text-xs font-bold uppercase tracking-widest text-gray-400">
+                  {user?.name}
+                </span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 text-white px-4 py-2.5 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-red-700 transition-all active:scale-95 flex items-center gap-2"
+              >
+                <LogOut size={16} />
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="text-gray-400 px-4 py-2.5 font-black text-xs uppercase tracking-widest hover:text-[#FF8C00] transition-colors"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="bg-[#FF8C00] text-black px-6 py-2.5 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-white transition-all active:scale-95"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
 
         <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
@@ -56,6 +92,38 @@ const Navbar: React.FC = () => {
               {link.name}
             </a>
           ))}
+          
+          <div className="border-t border-white/10 pt-6 flex flex-col gap-3">
+            {isAuthenticated ? (
+              <>
+                <p className="text-gray-400 font-bold text-sm">{user?.name}</p>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-600 text-white px-4 py-2.5 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-red-700 transition-all flex items-center gap-2"
+                >
+                  <LogOut size={16} />
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="text-gray-400 px-4 py-2.5 font-bold uppercase tracking-widest hover:text-[#FF8C00] transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="bg-[#FF8C00] text-black px-4 py-2.5 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-white transition-all"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Register
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       )}
     </nav>

@@ -18,7 +18,7 @@ const ContinuousBackground: React.FC = () => {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let particles: any[] = [];
+    let particles: (Smoke | Spark)[] = [];
 
     const handleResize = () => {
       canvas.width = window.innerWidth;

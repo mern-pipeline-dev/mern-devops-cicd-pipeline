@@ -3,7 +3,7 @@ import { useScrollContainer } from '../../context/ScrollContext';
 
 const TopRightSteeringWheel: React.FC = () => {
   // Get the scroll container ref from the Context Provider
-  const containerRef = useScrollContainer();
+  useScrollContainer();
 
   return (
     <div className="fixed top-8 right-8 z-50">

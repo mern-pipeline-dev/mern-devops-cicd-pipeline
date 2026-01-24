@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, useTransform } from 'framer-motion';
-import { Navigation, Signal, Wifi } from 'lucide-react';
+import { Navigation, Wifi } from 'lucide-react';
 import { useDrivingSimulation } from '../../../hooks/useDrivingSimulation';
 import steeringWheelImg from '../../../assets/steering-wheel.jpg'; // Verified .jpg
 
@@ -9,7 +9,6 @@ const LiveDashboard = () => {
   const [time, setTime] = useState(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
   
   const currentSpeed = useTransform(speed, (latest) => Math.round(latest));
-  const needleRotate = useTransform(speed, [0, 180], [-110, 110]);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })), 60000);

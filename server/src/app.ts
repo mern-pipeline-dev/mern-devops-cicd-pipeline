@@ -5,6 +5,7 @@ import { requestLogger } from './middleware/logger.middleware';
 import { errorHandler } from './middleware/error.middleware';
 import healthRoutes from './routes/health.routes';
 import carRoutes from './routes/car.routes';
+import authRoutes from './routes/auth.routes';
 import { dbConnected } from './config/db';
 
 const app: Application = express();
@@ -35,6 +36,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // Health check route (NO rate limiting)
 app.use('/health', healthRoutes);
+
+// Auth Routes (NO rate limiting on auth for registration)
+app.use('/auth', authRoutes);
 
 // API Routes (WITH rate limiting)
 app.use('/api/cars', carRoutes);
