@@ -1,0 +1,61 @@
+version: '3.8'
+
+networks:
+  mern-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+
+# Override docker-compose defaults
+env_file:
+  - docker/.env
+
+services:
+  # MongoDB database
+  mongo:
+    image: mongo:7
+    container_name: mern-mongo-prod
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: mernapp
+    networks:
+      - mern-network
+
+  # Backend server
+  server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.server
+    container_name: mern-server-prod
+    restart: always
+    env_file:
+      - ../server/.env
+    ports:
+      - "5000:5000"
+    depends_on:
+      mongo:
+        condition: service_started
+    networks:
+      - mern-network
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/mernapp
+      NODE_ENV: production
+
+  # Frontend client
+  client:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.client
+    container_name: mern-client-prod
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    networks:
+      - mern-network
