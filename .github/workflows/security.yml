@@ -1,0 +1,110 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    - cron: '0 2 * * 0'  # Weekly on Sunday at 2 AM UTC
+
+jobs:
+  # ============================================
+  # Dependency Scanning
+  # ============================================
+  dependency-scan:
+    name: Dependency Audit
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-directory: [server, client]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: ${{ matrix.node-directory }}
+        run: npm ci
+
+      - name: Run npm audit
+        working-directory: ${{ matrix.node-directory }}
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Generate SBOM
+        working-directory: ${{ matrix.node-directory }}
+        run: npx cyclonedx-npm --output-file sbom.json
+        continue-on-error: true
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-${{ matrix.node-directory }}
+          path: ${{ matrix.node-directory }}/sbom.json
+
+  # ============================================
+  # SAST (Static Application Security Testing)
+  # ============================================
+  sast:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    
+    permissions:
+      security-events: write
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: 'javascript'
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+  # ============================================
+  # Container Image Scanning
+  # ============================================
+  container-scan:
+    name: Container Image Scan
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    
+    strategy:
+      matrix:
+        image:
+          - dockerfile: docker/Dockerfile.server
+            name: server
+          - dockerfile: docker/Dockerfile.client
+            name: client
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build image for scanning
+        run: |
+          docker build -t ${{ matrix.image.name }}:latest -f ${{ matrix.image.dockerfile }} .
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ matrix.image.name }}:latest
+          format: 'sarif'
+          output: 'trivy-${{ matrix.image.name }}.sarif'
+
+      - name: Upload Trivy results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-${{ matrix.image.name }}.sarif'
+          category: 'trivy-${{ matrix.image.name }}'
